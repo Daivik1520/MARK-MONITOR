@@ -13,7 +13,7 @@ Sentry.init({
   release: `worldmonitor@${__APP_VERSION__}`,
   environment: location.hostname === 'worldmonitor.app' ? 'production'
     : location.hostname.includes('vercel.app') ? 'preview'
-    : 'development',
+      : 'development',
   enabled: Boolean(sentryDsn) && !location.hostname.startsWith('localhost') && !('__TAURI_INTERNALS__' in window),
   sendDefaultPii: true,
   tracesSampleRate: 0.1,
@@ -166,7 +166,7 @@ installRuntimeFetchPatch();
 loadDesktopSecrets().then(async () => {
   await initAnalytics();
   trackApiKeysSnapshot();
-}).catch(() => {});
+}).catch(() => { });
 
 // Apply stored theme preference before app initialization (safety net for inline script)
 applyStoredTheme();
@@ -208,6 +208,10 @@ if (urlParams.get('settings') === '1') {
     .init()
     .then(() => {
       clearChunkReloadGuard(chunkReloadStorageKey);
+      // Run env validation after app is loaded (non-blocking)
+      setTimeout(() => {
+        import('./utils/env-check').then(m => m.checkEnvironment()).catch(() => { });
+      }, 3000);
     })
     .catch(console.error);
 }
@@ -250,7 +254,7 @@ if (!('__TAURI_INTERNALS__' in window) && !('__TAURI__' in window)) {
         if (registration) {
           setInterval(async () => {
             if (!navigator.onLine) return;
-            try { await registration.update(); } catch {}
+            try { await registration.update(); } catch { }
           }, 60 * 60 * 1000);
         }
       },

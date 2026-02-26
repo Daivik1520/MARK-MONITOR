@@ -9,6 +9,7 @@
     "version:sync": "node scripts/sync-desktop-version.mjs",
     "version:check": "node scripts/sync-desktop-version.mjs --check",
     "dev": "vite",
+    "analyze": "npx -y rollup-plugin-visualizer --template treemap --open -- vite build",
     "dev:tech": "VITE_VARIANT=tech vite",
     "dev:finance": "VITE_VARIANT=finance vite",
     "dev:happy": "VITE_VARIANT=happy vite",
